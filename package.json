@@ -1,17 +1,17 @@
 {
-  "name": "typescript-action",
-  "description": "GitHub Actions TypeScript template",
-  "version": "0.0.0",
-  "author": "",
+  "name": "spt-package-action",
+  "description": "An action that help package mod.",
+  "version": "0.1.0",
+  "author": "Suntion",
   "type": "module",
   "private": true,
-  "homepage": "https://github.com/actions/typescript-action",
+  "homepage": "https://github.com/SunYanbox/spt-package-action",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/SunYanbox/spt-package-action.git"
   },
   "bugs": {
-    "url": "https://github.com/actions/typescript-action/issues"
+    "url": "https://github.com/SunYanbox/spt-package-action/issues"
   },
   "keywords": [
     "actions"
@@ -20,7 +20,7 @@
     ".": "./dist/index.js"
   },
   "engines": {
-    "node": ">=24.0.0"
+    "node": ">=24.14.0"
   },
   "scripts": {
     "bundle": "npm run format:write && npm run package",
