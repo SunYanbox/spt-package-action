@@ -70,8 +70,8 @@ export async function run(): Promise<void> {
     core.info(`Max depth: ${inputs.maxDepth}`)
     core.info(`Exclude patterns: ${inputs.excludePatterns.join(', ')}`)
 
-    // 获取工作目录
-    const workDir = process.cwd()
+    // 获取工作目录（优先使用 GITHUB_WORKSPACE 环境变量）
+    const workDir = process.env.GITHUB_WORKSPACE || process.cwd()
     core.info(`Working directory: ${workDir}`)
 
     // 创建输出目录
