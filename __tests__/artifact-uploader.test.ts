@@ -1,0 +1,130 @@
+/**
+ * artifact-uploader.ts 单元测试
+ */
+import { jest } from '@jest/globals'
+import type { ArtifactClient } from '@actions/artifact'
+
+// Mock @actions/artifact
+const mockUploadArtifact = jest.fn<ArtifactClient['uploadArtifact']>()
+
+jest.unstable_mockModule('@actions/artifact', () => ({
+  default: {
+    uploadArtifact: mockUploadArtifact
+  }
+}))
+
+// 动态导入被测试模块
+const { uploadArtifact, generateArtifactName } =
+  await import('../src/artifact-uploader.js')
+
+describe('artifact-uploader.ts', () => {
+  beforeEach(() => {
+    jest.resetAllMocks()
+  })
+
+  describe('uploadArtifact', () => {
+    it('should upload artifact successfully', async () => {
+      // 设置 mock 返回值
+      mockUploadArtifact.mockResolvedValueOnce({
+        artifactName: 'TestProject-1.0.0',
+        artifactId: 12345,
+        size: 1024,
+        failedItems: []
+      })
+
+      const result = await uploadArtifact({
+        filePath: '/output/TestProject-1.0.0.zip',
+        artifactName: 'TestProject-1.0.0',
+        retentionDays: 90
+      })
+
+      expect(result.artifactName).toBe('TestProject-1.0.0')
+      expect(result.artifactId).toBe(12345)
+      expect(result.size).toBe(1024)
+
+      // 验证 mock 调用
+      expect(mockUploadArtifact).toHaveBeenCalledWith(
+        'TestProject-1.0.0',
+        ['/output/TestProject-1.0.0.zip'],
+        '/output',
+        { retentionDays: 90 }
+      )
+    })
+
+    it('should use default retention days', async () => {
+      mockUploadArtifact.mockResolvedValueOnce({
+        artifactName: 'Test',
+        artifactId: 1,
+        size: 100,
+        failedItems: []
+      })
+
+      await uploadArtifact({
+        filePath: '/output/test.zip',
+        artifactName: 'Test'
+      })
+
+      expect(mockUploadArtifact).toHaveBeenCalledWith(
+        'Test',
+        ['/output/test.zip'],
+        '/output',
+        { retentionDays: 90 }
+      )
+    })
+
+    it('should throw error when upload fails', async () => {
+      mockUploadArtifact.mockResolvedValueOnce({
+        artifactName: 'Test',
+        artifactId: 0,
+        size: 0,
+        failedItems: ['/output/test.zip']
+      })
+
+      await expect(
+        uploadArtifact({
+          filePath: '/output/test.zip',
+          artifactName: 'Test'
+        })
+      ).rejects.toThrow('Failed to upload artifact')
+    })
+
+    it('should handle custom retention days', async () => {
+      mockUploadArtifact.mockResolvedValueOnce({
+        artifactName: 'Test',
+        artifactId: 1,
+        size: 100,
+        failedItems: []
+      })
+
+      await uploadArtifact({
+        filePath: '/output/test.zip',
+        artifactName: 'Test',
+        retentionDays: 30
+      })
+
+      expect(mockUploadArtifact).toHaveBeenCalledWith(
+        'Test',
+        ['/output/test.zip'],
+        '/output',
+        { retentionDays: 30 }
+      )
+    })
+  })
+
+  describe('generateArtifactName', () => {
+    it('should generate artifact name from project and version', () => {
+      const result = generateArtifactName('MyProject', '1.0.0')
+      expect(result).toBe('MyProject-1.0.0')
+    })
+
+    it('should handle version with special characters', () => {
+      const result = generateArtifactName('MyProject', '1.0.0-beta+build')
+      expect(result).toBe('MyProject-1.0.0-beta_build')
+    })
+
+    it('should handle version with spaces', () => {
+      const result = generateArtifactName('MyProject', '1.0.0 beta')
+      expect(result).toBe('MyProject-1.0.0_beta')
+    })
+  })
+})
