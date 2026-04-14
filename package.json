@@ -1,6 +1,6 @@
 {
   "name": "spt-package-action",
-  "description": "An action that help package mod.",
+  "description": "A GitHub Action that packages SPT (Single Player Tarkov) mods into distributable zip files",
   "version": "0.1.0",
   "author": "Suntion",
   "type": "module",
