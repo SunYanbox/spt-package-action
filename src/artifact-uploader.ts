@@ -2,7 +2,10 @@
  * 产物上传模块
  * 将打包好的 zip 文件上传到 GitHub Artifacts
  */
-import artifactClient from '@actions/artifact'
+import {
+  DefaultArtifactClient,
+  UploadArtifactResponse
+} from '@actions/artifact'
 import path from 'node:path'
 
 /**
@@ -42,26 +45,37 @@ export async function uploadArtifact(
   // 获取文件所在目录
   const rootDirectory = path.dirname(filePath)
 
+  const artifactClient = new DefaultArtifactClient()
+
+  let response: UploadArtifactResponse | null = null
+
   // 上传文件
-  const response = await artifactClient.uploadArtifact(
-    artifactName,
-    [filePath],
-    rootDirectory,
-    {
-      retentionDays
-    }
-  )
+  try {
+    response = await artifactClient.uploadArtifact(
+      artifactName,
+      [filePath],
+      rootDirectory,
+      { retentionDays }
+    )
+
+    console.log(`Artifact ${response.id} uploaded successfully`)
+    console.log(`ID: ${response.id}, Size: ${response.size} bytes`)
+  } catch (error) {
+    console.error('Failed to upload artifact:', error)
+  }
+
+  if (response == null || response.digest == undefined) {
+    throw new Error(`Failed to upload artifact: ${options}`)
+  }
 
   // 检查上传是否成功
-  if (response.failedItems.length > 0) {
-    throw new Error(
-      `Failed to upload artifact: ${response.failedItems.join(', ')}`
-    )
+  if (response.digest.length > 0) {
+    throw new Error(`Failed to upload artifact: ${response.id}`)
   }
 
   return {
-    artifactName: response.artifactName,
-    artifactId: response.artifactId ?? 0,
+    artifactName: options.artifactName,
+    artifactId: response.id ?? 0,
     size: response.size ?? 0
   }
 }

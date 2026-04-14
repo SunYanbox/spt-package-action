@@ -7,7 +7,7 @@ import * as io from '@actions/io'
 import path from 'node:path'
 import {
   DEFAULT_EXCLUDE_PATTERNS,
-  DEFAULT_RESOURCE_PATHS,
+  // DEFAULT_RESOURCE_PATHS,
   type ActionInputs
 } from './types.js'
 import { scanProjects, findProject } from './project-scanner.js'

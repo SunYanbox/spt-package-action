@@ -5,6 +5,7 @@
 import archiver from 'archiver'
 import { createWriteStream, promises as fs } from 'node:fs'
 import path from 'node:path'
+import fss from 'fs'
 
 /**
  * 压缩目录为 zip 文件
@@ -19,6 +20,10 @@ export async function createZip(
   return new Promise((resolve, reject) => {
     // 确保输出目录存在
     const outputDir = path.dirname(outputPath)
+
+    if (!fss.existsSync(outputDir)) {
+      fss.mkdirSync(outputDir, { recursive: true })
+    }
 
     // 创建输出流
     const output = createWriteStream(outputPath)
