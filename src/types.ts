@@ -20,8 +20,8 @@ export interface ProjectInfo {
  * Action 输入参数
  */
 export interface ActionInputs {
-  /** 指定项目路径（可选，以 .csproj 结尾） */
-  projectPath?: string
+  /** 指定项目路径列表（每行一个路径，可以是目录或 .csproj 文件） */
+  projectPaths: string[]
   /** 排除目录模式列表 */
   excludePatterns: string[]
   /** 最大检索深度 */

@@ -11,9 +11,12 @@ branding:
 inputs:
   project-path:
     description: |
-      Path to the .csproj file (relative to repository root).
+      Path(s) to the .csproj file(s), one per line.
       If not specified, the action will auto-detect .csproj files.
-      Required when multiple projects are found.
+      Multiple projects will be packaged separately.
+      Example: |
+        src/ProjectA/ProjectA.csproj
+        src/ProjectB/ProjectB.csproj
     required: false
     default: ''
 
