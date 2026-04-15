@@ -7,7 +7,7 @@
 ![Coverage](./badges/coverage.svg)
 
 A GitHub Action that packages SPT (Single Player Tarkov) mods into distributable
-zip files.
+ZIP files.
 
 English / [中文](README_ZH.md)
 
@@ -18,7 +18,7 @@ English / [中文](README_ZH.md)
 - Finds compiled DLL files in `bin/Release` directory
 - Collects resource files (db, data, wwwroot, res, etc.)
 - Creates proper SPT mod folder structure (`SPT/user/mods/{mod-name}/`)
-- Compresses into distributable zip files
+- Compresses into distributable ZIP files
 - Uploads artifacts to GitHub with 3-day retention
 - Supports multiple projects in a single run
 
@@ -130,8 +130,8 @@ SPT/
             └── res/
 ```
 
-This structure is then compressed into a zip file named
-`{project-name}-{version}.zip`.
+This structure is then compressed into a ZIP file named
+`{project-name}-{version}.ZIP`.
 
 ## How It Works
 
@@ -145,8 +145,8 @@ This structure is then compressed into a zip file named
    paths
 5. **Package Creation**: Creates the SPT mod folder structure and copies all
    files
-6. **Compression**: Compresses the `SPT` directory into a zip file
-7. **Artifact Upload**: Uploads the zip file as a GitHub artifact
+6. **Compression**: Compresses the `SPT` directory into a ZIP file
+7. **Artifact Upload**: Uploads the ZIP file as a GitHub artifact
 
 ## Requirements
 

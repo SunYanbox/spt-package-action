@@ -164,7 +164,7 @@ main.ts (主控制器)
 
 ### TypeScript 规范
 
-- 目标版本: ES2022
+- 目标版本: ECMAScript 2022
 - 模块系统: NodeNext (ESM)
 - 严格模式已启用 (`strict: true`)
 - 未使用的变量会报错 (`noUnusedLocals: true`)

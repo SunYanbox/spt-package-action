@@ -6,7 +6,7 @@
 ![CodeQL](https://github.com/SunYanbox/spt-package-action/actions/workflows/codeql-analysis.yml/badge.svg)
 ![Coverage](./badges/coverage.svg)
 
-一个用于将 SPT（单机版塔科夫）模组打包成可分发的 zip 文件的 GitHub Action。
+一个用于将 SPT（单机版塔科夫）模组打包成可分发的 ZIP 文件的 GitHub Action。
 
 [English](README.md) / 中文
 
@@ -17,7 +17,7 @@
 - 在 `bin/Release` 目录中查找编译好的 DLL 文件
 - 收集资源文件（db、data、wwwroot、res 等）
 - 创建正确的 SPT 模组文件夹结构（`SPT/user/mods/{模组名称}/`）
-- 压缩成可分发的 zip 文件
+- 压缩成可分发的 ZIP 文件
 - 将工件上传到 GitHub，保留 3 天
 - 支持一次运行中打包多个项目
 
@@ -129,7 +129,7 @@ SPT/
             └── res/
 ```
 
-然后，此结构会被压缩成一个名为 `{项目名称}-{版本号}.zip` 的 zip 文件。
+然后，此结构会被压缩成一个名为 `{项目名称}-{版本号}.ZIP` 的 ZIP 文件。
 
 ## 工作原理
 
@@ -138,8 +138,8 @@ SPT/
 3. **DLL 查找**：在 `bin/Release` 目录中查找编译好的 DLL（支持 .NET 6/7/8）
 4. **资源收集**：从默认路径和指定路径收集资源文件
 5. **打包创建**：创建 SPT 模组文件夹结构并复制所有文件
-6. **压缩**：将 `SPT` 目录压缩成 zip 文件
-7. **工件上传**：将 zip 文件作为 GitHub 工件上传
+6. **压缩**：将 `SPT` 目录压缩成 ZIP 文件
+7. **工件上传**：将 ZIP 文件作为 GitHub 工件上传
 
 ## 环境要求
 
