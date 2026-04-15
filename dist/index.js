@@ -128299,7 +128299,8 @@ async function uploadArtifact(options) {
     const rootDirectory = path$2.dirname(filePath);
     const artifactClient = new DefaultArtifactClient();
     // 上传文件
-    const response = await artifactClient.uploadArtifact(artifactName, [filePath], rootDirectory, { retentionDays });
+    // 注意：当 skipArchive 为 true 时，artifact 名称会被忽略，文件名会被用作 artifact 名称
+    const response = await artifactClient.uploadArtifact(artifactName, [filePath], rootDirectory, { retentionDays, skipArchive: true });
     console.log(`Artifact ${response.id} uploaded successfully`);
     console.log(`ID: ${response.id}, Size: ${response.size} bytes`);
     // 检查上传是否成功 - digest 存在且非空表示成功
@@ -128442,7 +128443,7 @@ async function run() {
                     uploadResult = await uploadArtifact({
                         filePath: packageResult.zipPath,
                         artifactName: packageResult.artifactName,
-                        retentionDays: 90
+                        retentionDays: 3
                     });
                     info(`Artifact uploaded: ${uploadResult.artifactName} (ID: ${uploadResult.artifactId})`);
                 }
