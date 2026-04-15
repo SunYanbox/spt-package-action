@@ -119,21 +119,21 @@ npx @github/local-action . src/main.ts .env
 
 ### 输入参数
 
-| 参数                   | 类型   | 必需 | 默认值    | 描述                               |
-| ---------------------- | ------ | ---- | --------- | ---------------------------------- |
-| `project-path`         | string | 否   | `''`      | .csproj 文件路径（多行，自动检测） |
-| `exclude-patterns`     | string | 否   | `''`      | 排除目录模式（追加到默认值）       |
-| `max-depth`            | string | 否   | `'5'`     | 扫描 .csproj 文件的最大深度        |
-| `mod-folder-name`      | string | 否   | `''`      | 模组文件夹名称（默认使用项目名称） |
-| `resource-paths`       | string | 否   | `''`      | 资源目录路径（追加到默认值）       |
-| `include-source-files` | string | 否   | `'false'` | 是否包含源码文件 (.cs, .ts 等)     |
+| 参数                   | 类型   | 必需 | 默认     | 描述                   |
+| ---------------------- | ------ | ---- | -------- | ---------------------- |
+| `project-path`         | string | 否   | `''`     | .csproj 路径，空则自动 |
+| `exclude-patterns`     | string | 否   | `''`     | 排除模式，追加默认值   |
+| `max-depth`            | string | 否   | `'5'`    | 扫描最大深度           |
+| `mod-folder-name`      | string | 否   | `''`     | 模组文件夹名，默认项目 |
+| `resource-paths`       | string | 否   | `''`     | 资源目录，追加默认值   |
+| `include-source-files` | string | 否   | `'false'`| 包含源码 (.cs, .ts)    |
 
 ### 输出参数
 
 | 参数              | 描述                         |
 | ----------------- | ---------------------------- |
-| `artifact-name`   | 上传的 artifact 名称（JSON） |
-| `artifact-path`   | 生成的 ZIP 文件路径（JSON）  |
+| `artifact-name`   | 上传的压缩包名称（JSON）     |
+| `artifact-path`   | 生成的压缩包文件路径（JSON） |
 | `project-name`    | 打包的项目名称（JSON）       |
 | `project-version` | 项目版本号（JSON）           |
 

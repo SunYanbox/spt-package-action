@@ -95,29 +95,29 @@ Outputs will be JSON arrays containing values for all projects.
 
 ## Inputs
 
-| Input                  | Description                                                                                                                        | Required | Default                  |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------ |
-| `project-path`         | Path(s) to `.csproj` file(s), one per line. If not specified, auto-detects `.csproj` files.                                        | No       | `''`                     |
-| `exclude-patterns`     | Additional directory patterns to exclude from scanning (one per line). Default exclusions: `Test`, `test`, `node_modules`, `.venv` | No       | `''`                     |
-| `max-depth`            | Maximum depth to scan for `.csproj` files                                                                                          | No       | `'5'`                    |
-| `mod-folder-name`      | Custom name for the mod folder. Output path: `SPT/user/mods/{mod-folder-name}/`                                                    | No       | `''` (uses project name) |
-| `resource-paths`       | Additional resource directories to include (one per line). Default: `db`, `data`, `wwwroot`, `res`                                 | No       | `''`                     |
-| `include-source-files` | Whether to include source code files (`.cs`, `.ts`, etc.) in the package                                                           | No       | `'false'`                |
+| Input                  | Description                   | Required | Default  |
+| ---------------------- | ----------------------------- | -------- | -------- |
+| `project-path`         | .csproj path(s), empty = auto | No       | `''`     |
+| `exclude-patterns`     | Exclude patterns, adds default| No       | `''`     |
+| `max-depth`            | Max depth to scan .csproj     | No       | `'5'`    |
+| `mod-folder-name`      | Custom mod folder name        | No       | `''`     |
+| `resource-paths`       | Resource dirs, adds default   | No       | `''`     |
+| `include-source-files` | Include source files (.cs,.ts)| No       | `'false'`|
 
 ## Outputs
 
-| Output            | Description                                                        |
-| ----------------- | ------------------------------------------------------------------ |
-| `artifact-name`   | Name of the uploaded artifact (JSON array for multiple projects)   |
-| `artifact-path`   | Path to the generated zip file (JSON array for multiple projects)  |
-| `project-name`    | Name of the packaged project (JSON array for multiple projects)    |
-| `project-version` | Version of the packaged project (JSON array for multiple projects) |
+| Output            | Description                              |
+| ----------------- | --------------------------------------   |
+| `artifact-name`   | Uploaded artifact (JSON array if multi)  |
+| `artifact-path`   | artifact file path (JSON array if multi) |
+| `project-name`    | Project name (JSON array if multi)       |
+| `project-version` | Project version (JSON array if multi)    |
 
 ## Output Structure
 
 The action creates the following directory structure before packaging:
 
-```
+```txt
 SPT/
 └── user/
     └── mods/
