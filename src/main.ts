@@ -169,7 +169,7 @@ export async function run(): Promise<void> {
           uploadResult = await uploadArtifact({
             filePath: packageResult.zipPath,
             artifactName: packageResult.artifactName,
-            retentionDays: 90
+            retentionDays: 3
           })
           core.info(
             `Artifact uploaded: ${uploadResult.artifactName} (ID: ${uploadResult.artifactId})`
