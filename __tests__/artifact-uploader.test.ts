@@ -30,7 +30,7 @@ describe('artifact-uploader.ts', () => {
       const result = await uploadArtifact({
         filePath: '/output/TestProject-1.0.0.zip',
         artifactName: 'TestProject-1.0.0',
-        retentionDays: 90
+        retentionDays: 3
       })
 
       expect(result.artifactName).toBe('TestProject-1.0.0')
@@ -42,7 +42,7 @@ describe('artifact-uploader.ts', () => {
         'TestProject-1.0.0',
         ['/output/TestProject-1.0.0.zip'],
         '/output',
-        { retentionDays: 90 }
+        { retentionDays: 3, skipArchive: true }
       )
     })
 
@@ -62,7 +62,7 @@ describe('artifact-uploader.ts', () => {
         'Test',
         ['/output/test.zip'],
         '/output',
-        { retentionDays: 3 }
+        { retentionDays: 3, skipArchive: true }
       )
     })
 
@@ -112,7 +112,27 @@ describe('artifact-uploader.ts', () => {
         'Test',
         ['/output/test.zip'],
         '/output',
-        { retentionDays: 30 }
+        { retentionDays: 30, skipArchive: true }
+      )
+    })
+
+    it('should pass skipArchive option when set to true', async () => {
+      mockUploadArtifact.mockResolvedValueOnce({
+        id: 1,
+        size: 100,
+        digest: 'sha256:xyz789'
+      })
+
+      await uploadArtifact({
+        filePath: '/output/test.zip',
+        artifactName: 'Test'
+      })
+
+      expect(mockUploadArtifact).toHaveBeenCalledWith(
+        'Test',
+        ['/output/test.zip'],
+        '/output',
+        { retentionDays: 3, skipArchive: true }
       )
     })
   })
