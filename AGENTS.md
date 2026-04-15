@@ -119,14 +119,14 @@ npx @github/local-action . src/main.ts .env
 
 ### 输入参数
 
-| 参数                   | 类型   | 必需 | 默认     | 描述                   |
-| ---------------------- | ------ | ---- | -------- | ---------------------- |
-| `project-path`         | string | 否   | `''`     | .csproj 路径，空则自动 |
-| `exclude-patterns`     | string | 否   | `''`     | 排除模式，追加默认值   |
-| `max-depth`            | string | 否   | `'5'`    | 扫描最大深度           |
-| `mod-folder-name`      | string | 否   | `''`     | 模组文件夹名，默认项目 |
-| `resource-paths`       | string | 否   | `''`     | 资源目录，追加默认值   |
-| `include-source-files` | string | 否   | `'false'`| 包含源码 (.cs, .ts)    |
+| 参数                   | 类型   | 必需 | 默认      | 描述                   |
+| ---------------------- | ------ | ---- | --------- | ---------------------- |
+| `project-path`         | string | 否   | `''`      | .csproj 路径，空则自动 |
+| `exclude-patterns`     | string | 否   | `''`      | 排除模式，追加默认值   |
+| `max-depth`            | string | 否   | `'5'`     | 扫描最大深度           |
+| `mod-folder-name`      | string | 否   | `''`      | 模组文件夹名，默认项目 |
+| `resource-paths`       | string | 否   | `''`      | 资源目录，追加默认值   |
+| `include-source-files` | string | 否   | `'false'` | 包含源码 (.cs, .ts)    |
 
 ### 输出参数
 

@@ -128444,7 +128444,7 @@ async function run() {
                 }
                 else {
                     // 跳过打包
-                    info('artifact skiped by env');
+                    info('artifact skipped by env');
                 }
                 results.push({
                     projectName: projectInfo.name,
