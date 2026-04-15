@@ -47,15 +47,14 @@ export async function uploadArtifact(
 
   const artifactClient = new DefaultArtifactClient()
 
-  let response: UploadArtifactResponse | null = null
-
   // 上传文件
-  response = await artifactClient.uploadArtifact(
-    artifactName,
-    [filePath],
-    rootDirectory,
-    { retentionDays }
-  )
+  const response: UploadArtifactResponse | null =
+    await artifactClient.uploadArtifact(
+      artifactName,
+      [filePath],
+      rootDirectory,
+      { retentionDays }
+    )
 
   console.log(`Artifact ${response.id} uploaded successfully`)
   console.log(`ID: ${response.id}, Size: ${response.size} bytes`)
