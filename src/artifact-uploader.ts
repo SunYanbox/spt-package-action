@@ -48,12 +48,13 @@ export async function uploadArtifact(
   const artifactClient = new DefaultArtifactClient()
 
   // 上传文件
+  // 注意：当 skipArchive 为 true 时，artifact 名称会被忽略，文件名会被用作 artifact 名称
   const response: UploadArtifactResponse | null =
     await artifactClient.uploadArtifact(
       artifactName,
       [filePath],
       rootDirectory,
-      { retentionDays }
+      { retentionDays, skipArchive: true }
     )
 
   console.log(`Artifact ${response.id} uploaded successfully`)
