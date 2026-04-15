@@ -5,6 +5,7 @@
 ![Check dist/](https://github.com/SunYanbox/spt-package-action/actions/workflows/check-dist.yml/badge.svg)
 ![CodeQL](https://github.com/SunYanbox/spt-package-action/actions/workflows/codeql-analysis.yml/badge.svg)
 ![Coverage](./badges/coverage.svg)
+![GitHub Release](https://img.shields.io/github/v/release/SunYanbox/spt-package-action)
 
 A GitHub Action that packages SPT (Single Player Tarkov) mods into distributable
 ZIP files.
@@ -23,6 +24,9 @@ English / [中文](README_ZH.md)
 - Supports multiple projects in a single run
 
 ## Usage
+
+Example: `SunYanbox/spt-package-action@vx.x.x`  
+*👆 Replace `vx.x.x` with the version shown in the Release badge above, or check the latest version at <https://github.com/marketplace/actions/spt-package-action>.*  
 
 ### Basic Usage
 
@@ -50,7 +54,7 @@ jobs:
 
       - name: Package SPT Mod
         id: package
-        uses: SunYanbox/spt-package-action@v1.0.0
+        uses: SunYanbox/spt-package-action@v{version}  # 👈 Replace with the version shown in the Release badge above
 
       - name: Print Output
         run: |
@@ -63,7 +67,7 @@ jobs:
 
 ```yaml
 - name: Package SPT Mod
-  uses: SunYanbox/spt-package-action@v1.0.0
+  uses: SunYanbox/spt-package-action@v{version}  # 👈 Replace with the version shown in the Release badge above
   with:
     project-path: |
       MyMod/MyMod.csproj
@@ -84,7 +88,7 @@ The action supports packaging multiple projects simultaneously:
 
 ```yaml
 - name: Package Multiple SPT Mods
-  uses: SunYanbox/spt-package-action@v1.0.0
+  uses: SunYanbox/spt-package-action@v{version}  # 👈 Replace with the version shown in the Release badge above
   with:
     project-path: |
       ModA/ModA.csproj

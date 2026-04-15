@@ -5,6 +5,7 @@
 ![Check dist/](https://github.com/SunYanbox/spt-package-action/actions/workflows/check-dist.yml/badge.svg)
 ![CodeQL](https://github.com/SunYanbox/spt-package-action/actions/workflows/codeql-analysis.yml/badge.svg)
 ![Coverage](./badges/coverage.svg)
+![GitHub Release](https://img.shields.io/github/v/release/SunYanbox/spt-package-action)
 
 一个用于将 SPT（单机版塔科夫）模组打包成可分发的 ZIP 文件的 GitHub Action。
 
@@ -22,6 +23,9 @@
 - 支持一次运行中打包多个项目
 
 ## 使用方法
+
+示例：`SunYanbox/spt-package-action@vx.x.x`  
+*👆 将 `vx.x.x` 替换为上方 Release 徽章显示的版本号，或访问 <https://github.com/marketplace/actions/spt-package-action> 查看最新版本。*
 
 ### 基本用法
 
@@ -49,7 +53,7 @@ jobs:
 
       - name: Package SPT Mod
         id: package
-        uses: SunYanbox/spt-package-action@v1.0.0
+        uses: SunYanbox/spt-package-action@v{version}  # 👈 请替换为上方 Release 徽章显示的版本号
 
       - name: Print Output
         run: |
@@ -62,7 +66,7 @@ jobs:
 
 ```yaml
 - name: Package SPT Mod
-  uses: SunYanbox/spt-package-action@v1.0.0
+  uses: SunYanbox/spt-package-action@v{version}  # 👈 请替换为上方 Release 徽章显示的版本号
   with:
     project-path: |
       MyMod/MyMod.csproj
@@ -83,7 +87,7 @@ jobs:
 
 ```yaml
 - name: Package Multiple SPT Mods
-  uses: SunYanbox/spt-package-action@v1.0.0
+  uses: SunYanbox/spt-package-action@v{version}  # 👈 请替换为上方 Release 徽章显示的版本号
   with:
     project-path: |
       ModA/ModA.csproj
