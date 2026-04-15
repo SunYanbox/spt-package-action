@@ -174,7 +174,7 @@ export async function run(): Promise<void> {
           )
         } else {
           // 跳过打包
-          core.info('artifact skiped by env')
+          core.info('artifact skipped by env')
         }
 
         results.push({
