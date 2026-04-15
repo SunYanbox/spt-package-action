@@ -1,305 +1,199 @@
-# Create a GitHub Action Using TypeScript
+# SPT Package Action
 
-![Linter](https://github.com/actions/typescript-action/actions/workflows/linter.yml/badge.svg)
-![CI](https://github.com/actions/typescript-action/actions/workflows/ci.yml/badge.svg)
-![Check dist/](https://github.com/actions/typescript-action/actions/workflows/check-dist.yml/badge.svg)
-![CodeQL](https://github.com/actions/typescript-action/actions/workflows/codeql-analysis.yml/badge.svg)
+![Linter](https://github.com/SunYanbox/spt-package-action/actions/workflows/linter.yml/badge.svg)
+![CI](https://github.com/SunYanbox/spt-package-action/actions/workflows/ci.yml/badge.svg)
+![Check dist/](https://github.com/SunYanbox/spt-package-action/actions/workflows/check-dist.yml/badge.svg)
+![CodeQL](https://github.com/SunYanbox/spt-package-action/actions/workflows/codeql-analysis.yml/badge.svg)
 ![Coverage](./badges/coverage.svg)
 
-Use this template to bootstrap the creation of a TypeScript action. :rocket:
+A GitHub Action that packages SPT (Single Player Tarkov) mods into distributable
+zip files.
 
-This template includes compilation support, tests, a validation workflow,
-publishing, and versioning guidance.
+English / [中文](README_ZH.md)
 
-If you are new, there's also a simpler introduction in the
-[Hello world JavaScript action repository](https://github.com/actions/hello-world-javascript-action).
+## Features
 
-## Create Your Own Action
-
-To create your own action, you can use this repository as a template! Just
-follow the below instructions:
-
-1. Click the **Use this template** button at the top of the repository
-1. Select **Create a new repository**
-1. Select an owner and name for your new repository
-1. Click **Create repository**
-1. Clone your new repository
-
-> [!IMPORTANT]
->
-> Make sure to remove or update the [`CODEOWNERS`](./CODEOWNERS) file! For
-> details on how to use this file, see
-> [About code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners).
-
-## Initial Setup
-
-After you've cloned the repository to your local machine or codespace, you'll
-need to perform some initial setup steps before you can develop your action.
-
-> [!NOTE]
->
-> You'll need to have a reasonably modern version of
-> [Node.js](https://nodejs.org) handy (20.x or later should work!). If you are
-> using a version manager like [`nodenv`](https://github.com/nodenv/nodenv) or
-> [`fnm`](https://github.com/Schniz/fnm), this template has a `.node-version`
-> file at the root of the repository that can be used to automatically switch to
-> the correct version when you `cd` into the repository. Additionally, this
-> `.node-version` file is used by GitHub Actions in any `actions/setup-node`
-> actions.
-
-1. :hammer_and_wrench: Install the dependencies
-
-   ```bash
-   npm install
-   ```
-
-1. :building_construction: Package the TypeScript for distribution
-
-   ```bash
-   npm run bundle
-   ```
-
-1. :white_check_mark: Run the tests
-
-   ```bash
-   $ npm test
-
-   PASS  ./index.test.js
-     ✓ throws invalid number (3ms)
-     ✓ wait 500 ms (504ms)
-     ✓ test runs (95ms)
-
-   ...
-   ```
-
-## Update the Action Metadata
-
-The [`action.yml`](action.yml) file defines metadata about your action, such as
-input(s) and output(s). For details about this file, see
-[Metadata syntax for GitHub Actions](https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions).
-
-When you copy this repository, update `action.yml` with the name, description,
-inputs, and outputs for your action.
-
-## Update the Action Code
-
-The [`src/`](./src/) directory is the heart of your action! This contains the
-source code that will be run when your action is invoked. You can replace the
-contents of this directory with your own code.
-
-There are a few things to keep in mind when writing your action code:
-
-- Most GitHub Actions toolkit and CI/CD operations are processed asynchronously.
-  In `main.ts`, you will see that the action is run in an `async` function.
-
-  ```javascript
-  import * as core from '@actions/core'
-  //...
-
-  async function run() {
-    try {
-      //...
-    } catch (error) {
-      core.setFailed(error.message)
-    }
-  }
-  ```
-
-  For more information about the GitHub Actions toolkit, see the
-  [documentation](https://github.com/actions/toolkit/blob/main/README.md).
-
-So, what are you waiting for? Go ahead and start customizing your action!
-
-1. Create a new branch
-
-   ```bash
-   git checkout -b releases/v1
-   ```
-
-1. Replace the contents of `src/` with your action code
-1. Add tests to `__tests__/` for your source code
-1. Format, test, and build the action
-
-   ```bash
-   npm run all
-   ```
-
-   > This step is important! It will run [`rollup`](https://rollupjs.org/) to
-   > build the final JavaScript action code with all dependencies included. If
-   > you do not run this step, your action will not work correctly when it is
-   > used in a workflow.
-
-1. (Optional) Test your action locally
-
-   The [`@github/local-action`](https://github.com/github/local-action) utility
-   can be used to test your action locally. It is a simple command-line tool
-   that "stubs" (or simulates) the GitHub Actions Toolkit. This way, you can run
-   your TypeScript action locally without having to commit and push your changes
-   to a repository.
-
-   The `local-action` utility can be run in the following ways:
-   - Visual Studio Code Debugger
-
-     Make sure to review and, if needed, update
-     [`.vscode/launch.json`](./.vscode/launch.json)
-
-   - Terminal/Command Prompt
-
-     ```bash
-     # npx @github/local action <action-yaml-path> <entrypoint> <dotenv-file>
-     npx @github/local-action . src/main.ts .env
-     ```
-
-   You can provide a `.env` file to the `local-action` CLI to set environment
-   variables used by the GitHub Actions Toolkit. For example, setting inputs and
-   event payload data used by your action. For more information, see the example
-   file, [`.env.example`](./.env.example), and the
-   [GitHub Actions Documentation](https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables).
-
-1. Commit your changes
-
-   ```bash
-   git add .
-   git commit -m "My first action is ready!"
-   ```
-
-1. Push them to your repository
-
-   ```bash
-   git push -u origin releases/v1
-   ```
-
-1. Create a pull request and get feedback on your action
-1. Merge the pull request into the `main` branch
-
-Your action is now published! :rocket:
-
-For information about versioning your action, see
-[Versioning](https://github.com/actions/toolkit/blob/main/docs/action-versioning.md)
-in the GitHub Actions toolkit.
-
-## Validate the Action
-
-You can now validate the action by referencing it in a workflow file. For
-example, [`ci.yml`](./.github/workflows/ci.yml) demonstrates how to reference an
-action in the same repository.
-
-```yaml
-steps:
-  - name: Checkout
-    id: checkout
-    uses: actions/checkout@v4
-
-  - name: Test Local Action
-    id: test-action
-    uses: ./
-    with:
-      milliseconds: 1000
-
-  - name: Print Output
-    id: output
-    run: echo "${{ steps.test-action.outputs.time }}"
-```
-
-For example workflow runs, check out the
-[Actions tab](https://github.com/actions/typescript-action/actions)! :rocket:
+- Automatically scans for `.csproj` files or uses specified project paths
+- Extracts project name and version from `.csproj` files
+- Finds compiled DLL files in `bin/Release` directory
+- Collects resource files (db, data, wwwroot, res, etc.)
+- Creates proper SPT mod folder structure (`SPT/user/mods/{mod-name}/`)
+- Compresses into distributable zip files
+- Uploads artifacts to GitHub with 3-day retention
+- Supports multiple projects in a single run
 
 ## Usage
 
-After testing, you can create version tag(s) that developers can use to
-reference different stable versions of your action. For more information, see
-[Versioning](https://github.com/actions/toolkit/blob/main/docs/action-versioning.md)
-in the GitHub Actions toolkit.
-
-To include the action in a workflow in another repository, you can use the
-`uses` syntax with the `@` symbol to reference a specific branch, tag, or commit
-hash.
+### Basic Usage
 
 ```yaml
-steps:
-  - name: Checkout
-    id: checkout
-    uses: actions/checkout@v4
+name: Package SPT Mod
 
-  - name: Test Local Action
-    id: test-action
-    uses: actions/typescript-action@v1 # Commit with the `v1` tag
-    with:
-      milliseconds: 1000
+on:
+  push:
+    branches: [main]
 
-  - name: Print Output
-    id: output
-    run: echo "${{ steps.test-action.outputs.time }}"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Build
+        run: dotnet build -c Release
+
+      - name: Package SPT Mod
+        id: package
+        uses: SunYanbox/spt-package-action@v1
+
+      - name: Print Output
+        run: |
+          echo "Project: ${{ steps.package.outputs.project-name }}"
+          echo "Version: ${{ steps.package.outputs.project-version }}"
+          echo "Artifact: ${{ steps.package.outputs.artifact-name }}"
 ```
 
-## Publishing a New Release
+### With Custom Options
 
-This project includes a helper script, [`script/release`](./script/release)
-designed to streamline the process of tagging and pushing new releases for
-GitHub Actions.
+```yaml
+- name: Package SPT Mod
+  uses: SunYanbox/spt-package-action@v1
+  with:
+    project-path: |
+      MyMod/MyMod.csproj
+    mod-folder-name: MyCustomMod
+    resource-paths: |
+      assets
+      config
+    exclude-patterns: |
+      Build
+      temp
+    max-depth: '3'
+    include-source-files: 'false'
+```
 
-GitHub Actions allows users to select a specific version of the action to use,
-based on release tags. This script simplifies this process by performing the
-following steps:
+### Multiple Projects
 
-1. **Retrieving the latest release tag:** The script starts by fetching the most
-   recent SemVer release tag of the current branch, by looking at the local data
-   available in your repository.
-1. **Prompting for a new release tag:** The user is then prompted to enter a new
-   release tag. To assist with this, the script displays the tag retrieved in
-   the previous step, and validates the format of the inputted tag (vX.X.X). The
-   user is also reminded to update the version field in package.json.
-1. **Tagging the new release:** The script then tags a new release and syncs the
-   separate major tag (e.g. v1, v2) with the new release tag (e.g. v1.0.0,
-   v2.1.2). When the user is creating a new major release, the script
-   auto-detects this and creates a `releases/v#` branch for the previous major
-   version.
-1. **Pushing changes to remote:** Finally, the script pushes the necessary
-   commits, tags and branches to the remote repository. From here, you will need
-   to create a new release in GitHub so users can easily reference the new tags
-   in their workflows.
+The action supports packaging multiple projects simultaneously:
 
-## Dependency License Management
+```yaml
+- name: Package Multiple SPT Mods
+  uses: SunYanbox/spt-package-action@v1
+  with:
+    project-path: |
+      ModA/ModA.csproj
+      ModB/ModB.csproj
+```
 
-This template includes a GitHub Actions workflow,
-[`licensed.yml`](./.github/workflows/licensed.yml), that uses
-[Licensed](https://github.com/licensee/licensed) to check for dependencies with
-missing or non-compliant licenses. This workflow is initially disabled. To
-enable the workflow, follow the below steps.
+Outputs will be JSON arrays containing values for all projects.
 
-1. Open [`licensed.yml`](./.github/workflows/licensed.yml)
-1. Uncomment the following lines:
+## Inputs
 
-   ```yaml
-   # pull_request:
-   #   branches:
-   #     - main
-   # push:
-   #   branches:
-   #     - main
-   ```
+| Input                  | Description                                                                                                                        | Required | Default                  |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------ |
+| `project-path`         | Path(s) to `.csproj` file(s), one per line. If not specified, auto-detects `.csproj` files.                                        | No       | `''`                     |
+| `exclude-patterns`     | Additional directory patterns to exclude from scanning (one per line). Default exclusions: `Test`, `test`, `node_modules`, `.venv` | No       | `''`                     |
+| `max-depth`            | Maximum depth to scan for `.csproj` files                                                                                          | No       | `'5'`                    |
+| `mod-folder-name`      | Custom name for the mod folder. Output path: `SPT/user/mods/{mod-folder-name}/`                                                    | No       | `''` (uses project name) |
+| `resource-paths`       | Additional resource directories to include (one per line). Default: `db`, `data`, `wwwroot`, `res`                                 | No       | `''`                     |
+| `include-source-files` | Whether to include source code files (`.cs`, `.ts`, etc.) in the package                                                           | No       | `'false'`                |
 
-1. Save and commit the changes
+## Outputs
 
-Once complete, this workflow will run any time a pull request is created or
-changes pushed directly to `main`. If the workflow detects any dependencies with
-missing or non-compliant licenses, it will fail the workflow and provide details
-on the issue(s) found.
+| Output            | Description                                                        |
+| ----------------- | ------------------------------------------------------------------ |
+| `artifact-name`   | Name of the uploaded artifact (JSON array for multiple projects)   |
+| `artifact-path`   | Path to the generated zip file (JSON array for multiple projects)  |
+| `project-name`    | Name of the packaged project (JSON array for multiple projects)    |
+| `project-version` | Version of the packaged project (JSON array for multiple projects) |
 
-### Updating Licenses
+## Output Structure
 
-Whenever you install or update dependencies, you can use the Licensed CLI to
-update the licenses database. To install Licensed, see the project's
-[Readme](https://github.com/licensee/licensed?tab=readme-ov-file#installation).
+The action creates the following directory structure before packaging:
 
-To update the cached licenses, run the following command:
+```
+SPT/
+└── user/
+    └── mods/
+        └── {mod-folder-name}/
+            ├── {project-name}.dll
+            ├── db/
+            ├── data/
+            ├── wwwroot/
+            └── res/
+```
+
+This structure is then compressed into a zip file named
+`{project-name}-{version}.zip`.
+
+## How It Works
+
+1. **Project Detection**: Scans the repository for `.csproj` files or uses
+   specified paths
+2. **Project Parsing**: Extracts project name and version from each `.csproj`
+   file
+3. **DLL Discovery**: Finds the compiled DLL in `bin/Release` directory
+   (supports .NET 6/7/8)
+4. **Resource Collection**: Collects resource files from default and specified
+   paths
+5. **Package Creation**: Creates the SPT mod folder structure and copies all
+   files
+6. **Compression**: Compresses the `SPT` directory into a zip file
+7. **Artifact Upload**: Uploads the zip file as a GitHub artifact
+
+## Requirements
+
+- Your project must be built with `dotnet build -c Release` before running this
+  action
+- The compiled DLL should be in the `bin/Release` directory
+- `.csproj` file must contain a `<Version>` element in a `<PropertyGroup>`
+
+Example `.csproj`:
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+</Project>
+```
+
+## Development
+
+### Setup
 
 ```bash
-licensed cache
+npm install
 ```
 
-To check the status of cached licenses, run the following command:
+### Build
 
 ```bash
-licensed status
+npm run bundle
 ```
+
+### Test
+
+```bash
+npm test
+```
+
+### Local Testing
+
+Use the `@github/local-action` utility to test locally:
+
+```bash
+npx @github/local-action . src/main.ts .env
+```
+
+## License
+
+This project is licensed under the terms specified in the [LICENSE](LICENSE)
+file.
