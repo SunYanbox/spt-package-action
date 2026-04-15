@@ -16,7 +16,7 @@ export interface UploadOptions {
   filePath: string
   /** artifact 名称 */
   artifactName: string
-  /** 保留天数（可选，默认 90 天） */
+  /** 保留天数（可选，默认 3 天） */
   retentionDays?: number
 }
 
@@ -40,7 +40,7 @@ export interface UploadResult {
 export async function uploadArtifact(
   options: UploadOptions
 ): Promise<UploadResult> {
-  const { filePath, artifactName, retentionDays = 90 } = options
+  const { filePath, artifactName, retentionDays = 3 } = options
 
   // 获取文件所在目录
   const rootDirectory = path.dirname(filePath)
