@@ -25,7 +25,8 @@
 ## 使用方法
 
 示例：`SunYanbox/spt-package-action@vx.x.x`  
-*👆 将 `vx.x.x` 替换为上方 Release 徽章显示的版本号，或访问 <https://github.com/marketplace/actions/spt-package-action> 查看最新版本。*
+_👆 将 `vx.x.x` 替换为上方 Release 徽章显示的版本号，或访问
+<https://github.com/marketplace/actions/spt-package-action> 查看最新版本。_
 
 ### 基本用法
 
@@ -53,7 +54,7 @@ jobs:
 
       - name: Package SPT Mod
         id: package
-        uses: SunYanbox/spt-package-action@v{version}  # 👈 请替换为上方 Release 徽章显示的版本号
+        uses: SunYanbox/spt-package-action@v{version} # 👈 请替换为上方 Release 徽章显示的版本号
 
       - name: Print Output
         run: |
@@ -66,7 +67,7 @@ jobs:
 
 ```yaml
 - name: Package SPT Mod
-  uses: SunYanbox/spt-package-action@v{version}  # 👈 请替换为上方 Release 徽章显示的版本号
+  uses: SunYanbox/spt-package-action@v{version} # 👈 请替换为上方 Release 徽章显示的版本号
   with:
     project-path: |
       MyMod/MyMod.csproj
@@ -87,7 +88,7 @@ jobs:
 
 ```yaml
 - name: Package Multiple SPT Mods
-  uses: SunYanbox/spt-package-action@v{version}  # 👈 请替换为上方 Release 徽章显示的版本号
+  uses: SunYanbox/spt-package-action@v{version} # 👈 请替换为上方 Release 徽章显示的版本号
   with:
     project-path: |
       ModA/ModA.csproj

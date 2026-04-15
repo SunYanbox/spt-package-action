@@ -26,7 +26,9 @@ English / [中文](README_ZH.md)
 ## Usage
 
 Example: `SunYanbox/spt-package-action@vx.x.x`  
-*👆 Replace `vx.x.x` with the version shown in the Release badge above, or check the latest version at <https://github.com/marketplace/actions/spt-package-action>.*  
+_👆 Replace `vx.x.x` with the version shown in the Release badge above, or check
+the latest version at
+<https://github.com/marketplace/actions/spt-package-action>._
 
 ### Basic Usage
 
@@ -54,7 +56,7 @@ jobs:
 
       - name: Package SPT Mod
         id: package
-        uses: SunYanbox/spt-package-action@v{version}  # 👈 Replace with the version shown in the Release badge above
+        uses: SunYanbox/spt-package-action@v{version} # 👈 Replace with the version shown in the Release badge above
 
       - name: Print Output
         run: |
@@ -67,7 +69,7 @@ jobs:
 
 ```yaml
 - name: Package SPT Mod
-  uses: SunYanbox/spt-package-action@v{version}  # 👈 Replace with the version shown in the Release badge above
+  uses: SunYanbox/spt-package-action@v{version} # 👈 Replace with the version shown in the Release badge above
   with:
     project-path: |
       MyMod/MyMod.csproj
@@ -88,7 +90,7 @@ The action supports packaging multiple projects simultaneously:
 
 ```yaml
 - name: Package Multiple SPT Mods
-  uses: SunYanbox/spt-package-action@v{version}  # 👈 Replace with the version shown in the Release badge above
+  uses: SunYanbox/spt-package-action@v{version} # 👈 Replace with the version shown in the Release badge above
   with:
     project-path: |
       ModA/ModA.csproj
