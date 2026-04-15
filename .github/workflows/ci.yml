@@ -56,6 +56,12 @@ jobs:
       - name: Test Local Action
         id: test-action
         uses: ./
+        with:
+          project-path: __tests__/TestCsharpProject/TestCsharpProject.csproj
+          exclude-patterns: |
+            node_modules
+            dist
+          replace-defaults: true
 
       - name: Print Output
         id: output
