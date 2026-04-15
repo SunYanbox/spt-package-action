@@ -114,12 +114,16 @@ export function filterExcludePatterns(
     // 计算相对路径
     const relativePath = path.relative(basePath, filePath)
 
+    // console.debug(`::debug::默认排除路径: ${excludePatterns}`)
+
     // 检查是否匹配任何排除模式
     for (const pattern of excludePatterns) {
       if (matchesExcludePattern(relativePath, pattern)) {
         return false
       }
     }
+
+    // console.debug(`::debug::获取的结果: ${relativePath}`)
 
     return true
   })
@@ -138,7 +142,11 @@ function matchesExcludePattern(relativePath: string, pattern: string): boolean {
   // 检查路径的任何部分是否匹配排除模式
   for (const part of parts) {
     // 支持大小写敏感和不敏感的匹配
-    if (part === pattern || part.toLowerCase() === pattern.toLowerCase()) {
+    if (
+      part === pattern ||
+      part.toLowerCase().includes(pattern.toLowerCase()) ||
+      part.toLowerCase() === pattern.toLowerCase()
+    ) {
       return true
     }
   }
