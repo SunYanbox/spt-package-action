@@ -49,7 +49,7 @@ jobs:
 
       - name: Package SPT Mod
         id: package
-        uses: SunYanbox/spt-package-action@v1
+        uses: SunYanbox/spt-package-action@v1.0.0
 
       - name: Print Output
         run: |
@@ -62,7 +62,7 @@ jobs:
 
 ```yaml
 - name: Package SPT Mod
-  uses: SunYanbox/spt-package-action@v1
+  uses: SunYanbox/spt-package-action@v1.0.0
   with:
     project-path: |
       MyMod/MyMod.csproj
@@ -83,7 +83,7 @@ jobs:
 
 ```yaml
 - name: Package Multiple SPT Mods
-  uses: SunYanbox/spt-package-action@v1
+  uses: SunYanbox/spt-package-action@v1.0.0
   with:
     project-path: |
       ModA/ModA.csproj
