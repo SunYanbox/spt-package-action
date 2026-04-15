@@ -22,8 +22,10 @@ inputs:
 
   exclude-patterns:
     description: |
-      Additional directory patterns to exclude from project scanning (one per line).
+      Directory patterns to exclude from project scanning (one per line).
       Default exclusions: Test, test, node_modules, .venv
+      By default, these patterns are appended to the defaults.
+      Set replace-defaults to true to replace defaults entirely.
       Example: |
         Build
         dist
@@ -46,14 +48,24 @@ inputs:
 
   resource-paths:
     description: |
-      Additional resource directories to include in the package (one per line).
+      Resource directories to include in the package (one per line).
       Default resources: db, data, wwwroot, res
+      By default, these paths are appended to the defaults.
+      Set replace-defaults to true to replace defaults entirely.
       Example: |
         assets
         config
         plugins
     required: false
     default: ''
+
+  replace-defaults:
+    description: |
+      Whether to replace default values instead of appending.
+      If true, user-provided exclude-patterns and resource-paths will replace defaults entirely.
+      If false (default), user inputs are appended to the defaults.
+    required: false
+    default: 'false'
 
   include-source-files:
     description:

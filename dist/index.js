@@ -42952,7 +42952,7 @@ async function findFiles(dir, ext) {
  * @returns 打包结果
  */
 async function createPackage(options) {
-    const { projectInfo, modFolderName, resourcePaths, includeSourceFiles, outputDir } = options;
+    const { projectInfo, modFolderName, resourcePaths, includeSourceFiles, outputDir, replaceDefaults } = options;
     // 确定模组文件夹名称
     const modName = modFolderName || projectInfo.name;
     // 创建 SPT 目录结构
@@ -42974,8 +42974,10 @@ async function createPackage(options) {
     }
     const dllDestPath = path$2.join(modsDir, `${projectInfo.name}.dll`);
     await cp(dllPath, dllDestPath);
-    // 收集并复制资源文件
-    const allResourcePaths = [...DEFAULT_RESOURCE_PATHS, ...resourcePaths];
+    // 收集并复制资源文件（条件合并）
+    const allResourcePaths = replaceDefaults
+        ? resourcePaths
+        : [...DEFAULT_RESOURCE_PATHS, ...resourcePaths];
     const resourceFiles = await collectResourceFiles(projectInfo.path, allResourcePaths, includeSourceFiles);
     for (const resourceFile of resourceFiles) {
         // 计算相对路径，保持目录结构
@@ -128337,14 +128339,14 @@ function getInputs() {
     const modFolderName = getInput('mod-folder-name') || undefined;
     const resourceInput = getInput('resource-paths');
     const includeSourceFiles = getBooleanInput('include-source-files');
+    const replaceDefaults = getBooleanInput('replace-defaults');
     // 解析项目路径（多行输入）
     const projectPaths = parseMultilineInput(projectPathInput);
-    // 解析排除模式（追加到默认值）
-    const excludePatterns = [
-        ...DEFAULT_EXCLUDE_PATTERNS,
-        ...parseMultilineInput(excludeInput)
-    ];
-    // 解析资源路径（追加到默认值）
+    // 解析排除模式（条件合并）
+    const excludePatterns = replaceDefaults
+        ? parseMultilineInput(excludeInput)
+        : [...DEFAULT_EXCLUDE_PATTERNS, ...parseMultilineInput(excludeInput)];
+    // 解析资源路径（合并逻辑在 packager.ts 中完成）
     const resourcePaths = parseMultilineInput(resourceInput);
     return {
         projectPaths,
@@ -128352,7 +128354,8 @@ function getInputs() {
         maxDepth,
         modFolderName,
         resourcePaths,
-        includeSourceFiles
+        includeSourceFiles,
+        replaceDefaults
     };
 }
 /**
@@ -128423,7 +128426,8 @@ async function run() {
                     modFolderName: inputs.modFolderName,
                     resourcePaths: inputs.resourcePaths,
                     includeSourceFiles: inputs.includeSourceFiles,
-                    outputDir
+                    outputDir,
+                    replaceDefaults: inputs.replaceDefaults
                 });
                 info(`Package created: ${packageResult.artifactName}`);
                 // 压缩 SPT 目录

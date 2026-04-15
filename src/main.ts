@@ -39,17 +39,17 @@ function getInputs(): ActionInputs {
   const modFolderName = core.getInput('mod-folder-name') || undefined
   const resourceInput = core.getInput('resource-paths')
   const includeSourceFiles = core.getBooleanInput('include-source-files')
+  const replaceDefaults = core.getBooleanInput('replace-defaults')
 
   // 解析项目路径（多行输入）
   const projectPaths = parseMultilineInput(projectPathInput)
 
-  // 解析排除模式（追加到默认值）
-  const excludePatterns = [
-    ...DEFAULT_EXCLUDE_PATTERNS,
-    ...parseMultilineInput(excludeInput)
-  ]
+  // 解析排除模式（条件合并）
+  const excludePatterns = replaceDefaults
+    ? parseMultilineInput(excludeInput)
+    : [...DEFAULT_EXCLUDE_PATTERNS, ...parseMultilineInput(excludeInput)]
 
-  // 解析资源路径（追加到默认值）
+  // 解析资源路径（合并逻辑在 packager.ts 中完成）
   const resourcePaths = parseMultilineInput(resourceInput)
 
   return {
@@ -58,7 +58,8 @@ function getInputs(): ActionInputs {
     maxDepth,
     modFolderName,
     resourcePaths,
-    includeSourceFiles
+    includeSourceFiles,
+    replaceDefaults
   }
 }
 
@@ -150,7 +151,8 @@ export async function run(): Promise<void> {
           modFolderName: inputs.modFolderName,
           resourcePaths: inputs.resourcePaths,
           includeSourceFiles: inputs.includeSourceFiles,
-          outputDir
+          outputDir,
+          replaceDefaults: inputs.replaceDefaults
         })
         core.info(`Package created: ${packageResult.artifactName}`)
 

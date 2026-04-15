@@ -22,6 +22,8 @@ export interface PackageOptions {
   includeSourceFiles: boolean
   /** 输出目录 */
   outputDir: string
+  /** 是否替换默认值（而非追加） */
+  replaceDefaults: boolean
 }
 
 /**
@@ -188,7 +190,8 @@ export async function createPackage(
     modFolderName,
     resourcePaths,
     includeSourceFiles,
-    outputDir
+    outputDir,
+    replaceDefaults
   } = options
 
   // 确定模组文件夹名称
@@ -219,8 +222,10 @@ export async function createPackage(
   const dllDestPath = path.join(modsDir, `${projectInfo.name}.dll`)
   await io.cp(dllPath, dllDestPath)
 
-  // 收集并复制资源文件
-  const allResourcePaths = [...DEFAULT_RESOURCE_PATHS, ...resourcePaths]
+  // 收集并复制资源文件（条件合并）
+  const allResourcePaths = replaceDefaults
+    ? resourcePaths
+    : [...DEFAULT_RESOURCE_PATHS, ...resourcePaths]
   const resourceFiles = await collectResourceFiles(
     projectInfo.path,
     allResourcePaths,

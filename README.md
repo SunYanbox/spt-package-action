@@ -95,14 +95,15 @@ Outputs will be JSON arrays containing values for all projects.
 
 ## Inputs
 
-| Input                  | Description                    | Required | Default   |
-| ---------------------- | ------------------------------ | -------- | --------- |
-| `project-path`         | .csproj path(s), empty = auto  | No       | `''`      |
-| `exclude-patterns`     | Exclude patterns, adds default | No       | `''`      |
-| `max-depth`            | Max depth to scan .csproj      | No       | `'5'`     |
-| `mod-folder-name`      | Custom mod folder name         | No       | `''`      |
-| `resource-paths`       | Resource dirs, adds default    | No       | `''`      |
-| `include-source-files` | Include source files (.cs,.ts) | No       | `'false'` |
+| Input                  | Description                        | Required | Default   |
+| ---------------------- | ---------------------------------- | -------- | --------- |
+| `project-path`         | .csproj path(s), empty = auto      | No       | `''`      |
+| `exclude-patterns`     | Exclude patterns (append/replace)  | No       | `''`      |
+| `max-depth`            | Max depth to scan .csproj          | No       | `'5'`     |
+| `mod-folder-name`      | Custom mod folder name             | No       | `''`      |
+| `resource-paths`       | Resource dirs (append/replace)     | No       | `''`      |
+| `include-source-files` | Include source files (.cs,.ts)     | No       | `'false'` |
+| `replace-defaults`     | Replace defaults instead of append | No       | `'false'` |
 
 ## Outputs
 

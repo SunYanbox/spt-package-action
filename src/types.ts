@@ -32,6 +32,8 @@ export interface ActionInputs {
   resourcePaths: string[]
   /** 是否包含源码文件 */
   includeSourceFiles: boolean
+  /** 是否替换默认值（而非追加） */
+  replaceDefaults: boolean
 }
 
 /**
