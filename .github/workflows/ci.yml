@@ -57,8 +57,16 @@ jobs:
         id: test-action
         uses: ./
         with:
-          milliseconds: 2000
+          project-path: __tests__/TestCsharpProject/TestCsharpProject.csproj
+          exclude-patterns: |
+            node_modules
+            dist
+          replace-defaults: true
 
       - name: Print Output
         id: output
-        run: echo "${{ steps.test-action.outputs.time }}"
+        run: |
+          echo "Project Name: ${{ steps.test-action.outputs.project-name }}"
+          echo "Project Version: ${{ steps.test-action.outputs.project-version }}"
+          echo "Artifact Name: ${{ steps.test-action.outputs.artifact-name }}"
+          echo "Artifact Path: ${{ steps.test-action.outputs.artifact-path }}"

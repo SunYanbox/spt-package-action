@@ -78,5 +78,13 @@ export default [
       'no-unused-vars': 'off',
       'prettier/prettier': 'error'
     }
+  },
+  {
+    files: ['__tests__/**/*.ts', '__fixtures__/**/*.ts', '*.config.*'],
+    languageOptions: {
+      parserOptions: {
+        projectService: false
+      }
+    }
   }
 ]

@@ -6,11 +6,12 @@ MD004:
 
 # Disable line length for tables
 MD013:
+  line_length: 120
   tables: false
 
 # Ordered list item prefix
 MD029:
-  style: one
+  style: ordered
 
 # Spaces after list markers
 MD030:

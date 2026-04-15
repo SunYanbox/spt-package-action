@@ -1,23 +1,90 @@
-name: The name of your action here
-description: Provide a description here
-author: Your name or organization here
+name: spt-package-action
+description:
+  A GitHub Action that packages SPT (Single Player Tarkov) mods into
+  distributable zip files
+author: Suntion
 
-# Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
-  icon: heart
-  color: red
+  icon: package
+  color: blue
 
-# Define your inputs here.
 inputs:
-  milliseconds:
-    description: Your input description here
-    required: true
-    default: '1000'
+  project-path:
+    description: |
+      Path(s) to the .csproj file(s), one per line.
+      If not specified, the action will auto-detect .csproj files.
+      Multiple projects will be packaged separately.
+      Example: |
+        src/ProjectA/ProjectA.csproj
+        src/ProjectB/ProjectB.csproj
+    required: false
+    default: ''
 
-# Define your outputs here.
+  exclude-patterns:
+    description: |
+      Directory patterns to exclude from project scanning (one per line).
+      Default exclusions: Test, test, node_modules, .venv
+      By default, these patterns are appended to the defaults.
+      Set replace-defaults to true to replace defaults entirely.
+      Example: |
+        Build
+        dist
+        temp
+    required: false
+    default: ''
+
+  max-depth:
+    description: Maximum depth to scan for .csproj files
+    required: false
+    default: '5'
+
+  mod-folder-name:
+    description: |
+      Custom name for the mod folder in the output structure.
+      If not specified, uses the project name.
+      Output path: SPT/user/mods/{mod-folder-name}/
+    required: false
+    default: ''
+
+  resource-paths:
+    description: |
+      Resource directories to include in the package (one per line).
+      Default resources: db, data, wwwroot, res
+      By default, these paths are appended to the defaults.
+      Set replace-defaults to true to replace defaults entirely.
+      Example: |
+        assets
+        config
+        plugins
+    required: false
+    default: ''
+
+  replace-defaults:
+    description: |
+      Whether to replace default values instead of appending.
+      If true, user-provided exclude-patterns and resource-paths will replace defaults entirely.
+      If false (default), user inputs are appended to the defaults.
+    required: false
+    default: 'false'
+
+  include-source-files:
+    description:
+      Whether to include source code files (.cs, .ts, etc.) in the package
+    required: false
+    default: 'false'
+
 outputs:
-  time:
-    description: Your output description here
+  artifact-name:
+    description: Name of the uploaded artifact
+
+  artifact-path:
+    description: Path to the generated zip file
+
+  project-name:
+    description: Name of the packaged project
+
+  project-version:
+    description: Version of the packaged project
 
 runs:
   using: node24
