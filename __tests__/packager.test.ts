@@ -168,6 +168,8 @@ describe('packager.ts', () => {
         outputDir: OUTPUT_DIR
       })
 
+      console.debug(`打包结果: ${result}`)
+
       // 验证自定义模组目录已创建
       const sptDir = path.join(OUTPUT_DIR, 'SPT', 'user', 'mods', 'CustomMod')
       const stats = await fs.stat(sptDir)

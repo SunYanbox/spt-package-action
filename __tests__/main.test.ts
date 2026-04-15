@@ -106,17 +106,23 @@ describe('main.ts', () => {
       expect(mockCreateZip).toHaveBeenCalled()
       expect(mockUploadArtifact).toHaveBeenCalled()
 
-      // 验证输出设置
+      // 验证输出设置（JSON 数组格式）
       expect(core.setOutput).toHaveBeenCalledWith(
         'artifact-name',
-        'TestProject-1.0.0'
+        JSON.stringify(['TestProject-1.0.0'])
       )
-      expect(core.setOutput).toHaveBeenCalledWith('project-name', 'TestProject')
-      expect(core.setOutput).toHaveBeenCalledWith('project-version', '1.0.0')
+      expect(core.setOutput).toHaveBeenCalledWith(
+        'project-name',
+        JSON.stringify(['TestProject'])
+      )
+      expect(core.setOutput).toHaveBeenCalledWith(
+        'project-version',
+        JSON.stringify(['1.0.0'])
+      )
     })
 
     it('should complete workflow with specified project path', async () => {
-      // 设置指定项目路径
+      // 设置指定项目路径（单行输入）
       core.getInput.mockImplementation((name: string) => {
         const values: Record<string, string> = {
           'project-path': '/workspace/MyProject/MyProject.csproj',
@@ -159,7 +165,87 @@ describe('main.ts', () => {
 
       expect(mockFindProject).toHaveBeenCalled()
       expect(mockScanProjects).not.toHaveBeenCalled()
-      expect(core.setOutput).toHaveBeenCalledWith('project-name', 'MyProject')
+      // 验证输出为 JSON 数组格式
+      expect(core.setOutput).toHaveBeenCalledWith(
+        'project-name',
+        JSON.stringify(['MyProject'])
+      )
+    })
+
+    it('should package multiple projects from specified paths', async () => {
+      // 设置多个项目路径（多行输入）
+      core.getInput.mockImplementation((name: string) => {
+        const values: Record<string, string> = {
+          'project-path':
+            '/workspace/ProjectA/ProjectA.csproj\n/workspace/ProjectB/ProjectB.csproj',
+          'exclude-patterns': '',
+          'max-depth': '5',
+          'mod-folder-name': '',
+          'resource-paths': '',
+          'include-source-files': 'false'
+        }
+        return values[name] || ''
+      })
+
+      // 设置查找项目返回
+      mockFindProject
+        .mockResolvedValueOnce({
+          name: 'ProjectA',
+          version: '1.0.0',
+          path: '/workspace/ProjectA',
+          csprojPath: '/workspace/ProjectA/ProjectA.csproj'
+        })
+        .mockResolvedValueOnce({
+          name: 'ProjectB',
+          version: '2.0.0',
+          path: '/workspace/ProjectB',
+          csprojPath: '/workspace/ProjectB/ProjectB.csproj'
+        })
+
+      // 设置打包返回
+      mockCreatePackage
+        .mockResolvedValueOnce({
+          projectName: 'ProjectA',
+          version: '1.0.0',
+          zipPath: '/workspace/spt-output/ProjectA-1.0.0.zip',
+          artifactName: 'ProjectA-1.0.0'
+        })
+        .mockResolvedValueOnce({
+          projectName: 'ProjectB',
+          version: '2.0.0',
+          zipPath: '/workspace/spt-output/ProjectB-2.0.0.zip',
+          artifactName: 'ProjectB-2.0.0'
+        })
+
+      mockCreateZip.mockResolvedValue('/workspace/spt-output/test.zip')
+
+      mockUploadArtifact
+        .mockResolvedValueOnce({
+          artifactName: 'ProjectA-1.0.0',
+          artifactId: 111,
+          size: 1024
+        })
+        .mockResolvedValueOnce({
+          artifactName: 'ProjectB-2.0.0',
+          artifactId: 222,
+          size: 2048
+        })
+
+      await run()
+
+      // 验证调用了两次 findProject
+      expect(mockFindProject).toHaveBeenCalledTimes(2)
+      expect(mockScanProjects).not.toHaveBeenCalled()
+
+      // 验证输出为 JSON 数组格式（多个项目）
+      expect(core.setOutput).toHaveBeenCalledWith(
+        'project-name',
+        JSON.stringify(['ProjectA', 'ProjectB'])
+      )
+      expect(core.setOutput).toHaveBeenCalledWith(
+        'project-version',
+        JSON.stringify(['1.0.0', '2.0.0'])
+      )
     })
   })
 
@@ -174,7 +260,7 @@ describe('main.ts', () => {
       )
     })
 
-    it('should fail when multiple projects found', async () => {
+    it('should warn and continue when more than 3 projects found', async () => {
       mockScanProjects.mockResolvedValueOnce([
         {
           name: 'Project1',
@@ -187,29 +273,88 @@ describe('main.ts', () => {
           version: '1.0.0',
           path: '/p2',
           csprojPath: '/p2/p2.csproj'
+        },
+        {
+          name: 'Project3',
+          version: '1.0.0',
+          path: '/p3',
+          csprojPath: '/p3/p3.csproj'
+        },
+        {
+          name: 'Project4',
+          version: '1.0.0',
+          path: '/p4',
+          csprojPath: '/p4/p4.csproj'
         }
       ])
 
+      // 设置打包返回
+      mockCreatePackage.mockResolvedValue({
+        projectName: 'TestProject',
+        version: '1.0.0',
+        zipPath: '/workspace/spt-output/TestProject-1.0.0.zip',
+        artifactName: 'TestProject-1.0.0'
+      })
+
+      mockCreateZip.mockResolvedValue(
+        '/workspace/spt-output/TestProject-1.0.0.zip'
+      )
+
+      mockUploadArtifact.mockResolvedValue({
+        artifactName: 'TestProject-1.0.0',
+        artifactId: 12345,
+        size: 1024
+      })
+
       await run()
 
-      expect(core.setFailed).toHaveBeenCalledWith(
-        expect.stringContaining('Multiple projects found')
+      expect(core.warning).toHaveBeenCalledWith(
+        expect.stringContaining('Found 4 projects')
       )
+      expect(core.setFailed).not.toHaveBeenCalled()
     })
 
-    it('should fail when specified project not found', async () => {
+    it('should skip non-existent project paths and continue', async () => {
       core.getInput.mockImplementation((name: string) => {
-        if (name === 'project-path') return '/nonexistent/project.csproj'
+        if (name === 'project-path') {
+          return '/nonexistent/project.csproj\n/workspace/existing.csproj'
+        }
         return ''
       })
 
-      mockFindProject.mockResolvedValueOnce(null)
+      mockFindProject
+        .mockResolvedValueOnce(null) // 第一个路径不存在
+        .mockResolvedValueOnce({
+          // 第二个路径存在
+          name: 'ExistingProject',
+          version: '1.0.0',
+          path: '/workspace',
+          csprojPath: '/workspace/existing.csproj'
+        })
+
+      mockCreatePackage.mockResolvedValueOnce({
+        projectName: 'ExistingProject',
+        version: '1.0.0',
+        zipPath: '/workspace/spt-output/ExistingProject-1.0.0.zip',
+        artifactName: 'ExistingProject-1.0.0'
+      })
+
+      mockCreateZip.mockResolvedValueOnce(
+        '/workspace/spt-output/ExistingProject-1.0.0.zip'
+      )
+
+      mockUploadArtifact.mockResolvedValueOnce({
+        artifactName: 'ExistingProject-1.0.0',
+        artifactId: 12345,
+        size: 1024
+      })
 
       await run()
 
-      expect(core.setFailed).toHaveBeenCalledWith(
+      expect(core.warning).toHaveBeenCalledWith(
         expect.stringContaining('Project not found')
       )
+      expect(core.setOutput).toHaveBeenCalled()
     })
 
     it('should handle errors gracefully', async () => {
