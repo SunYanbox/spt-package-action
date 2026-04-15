@@ -196,7 +196,15 @@ export async function createPackage(
 
   // 创建 SPT 目录结构
   const sptDir = path.join(outputDir, 'SPT')
-  const modsDir = path.join(sptDir, 'user', 'mods', modName)
+  const modsParentDir = path.join(sptDir, 'user', 'mods')
+  const modsDir = path.join(modsParentDir, modName)
+
+  // 清理已存在的模组目录，避免残留文件
+  try {
+    await io.rmRF(modsParentDir)
+  } catch {
+    // 目录不存在，忽略错误
+  }
 
   await io.mkdirP(modsDir)
 
