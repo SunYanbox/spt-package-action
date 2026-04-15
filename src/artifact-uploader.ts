@@ -50,27 +50,19 @@ export async function uploadArtifact(
   let response: UploadArtifactResponse | null = null
 
   // 上传文件
-  try {
-    response = await artifactClient.uploadArtifact(
-      artifactName,
-      [filePath],
-      rootDirectory,
-      { retentionDays }
-    )
+  response = await artifactClient.uploadArtifact(
+    artifactName,
+    [filePath],
+    rootDirectory,
+    { retentionDays }
+  )
 
-    console.log(`Artifact ${response.id} uploaded successfully`)
-    console.log(`ID: ${response.id}, Size: ${response.size} bytes`)
-  } catch (error) {
-    console.error('Failed to upload artifact:', error)
-  }
+  console.log(`Artifact ${response.id} uploaded successfully`)
+  console.log(`ID: ${response.id}, Size: ${response.size} bytes`)
 
-  if (response == null || response.digest == undefined) {
-    throw new Error(`Failed to upload artifact: ${options}`)
-  }
-
-  // 检查上传是否成功
-  if (response.digest.length > 0) {
-    throw new Error(`Failed to upload artifact: ${response.id}`)
+  // 检查上传是否成功 - digest 存在且非空表示成功
+  if (!response.digest || response.digest.length === 0) {
+    throw new Error(`Failed to upload artifact: ${artifactName}`)
   }
 
   return {

@@ -2,16 +2,12 @@
  * artifact-uploader.ts 单元测试
  */
 import { jest } from '@jest/globals'
-import type { ArtifactClient } from '@actions/artifact'
+import * as artifactMock from '../__fixtures__/artifact.js'
 
 // Mock @actions/artifact
-const mockUploadArtifact = jest.fn<ArtifactClient['uploadArtifact']>()
+jest.unstable_mockModule('@actions/artifact', () => artifactMock)
 
-jest.unstable_mockModule('@actions/artifact', () => ({
-  default: {
-    uploadArtifact: mockUploadArtifact
-  }
-}))
+const { mockUploadArtifact } = artifactMock
 
 // 动态导入被测试模块
 const { uploadArtifact, generateArtifactName } =
@@ -26,10 +22,9 @@ describe('artifact-uploader.ts', () => {
     it('should upload artifact successfully', async () => {
       // 设置 mock 返回值
       mockUploadArtifact.mockResolvedValueOnce({
-        artifactName: 'TestProject-1.0.0',
-        artifactId: 12345,
+        id: 12345,
         size: 1024,
-        failedItems: []
+        digest: 'sha256:abc123'
       })
 
       const result = await uploadArtifact({
@@ -53,10 +48,9 @@ describe('artifact-uploader.ts', () => {
 
     it('should use default retention days', async () => {
       mockUploadArtifact.mockResolvedValueOnce({
-        artifactName: 'Test',
-        artifactId: 1,
+        id: 1,
         size: 100,
-        failedItems: []
+        digest: 'sha256:def456'
       })
 
       await uploadArtifact({
@@ -68,16 +62,29 @@ describe('artifact-uploader.ts', () => {
         'Test',
         ['/output/test.zip'],
         '/output',
-        { retentionDays: 90 }
+        { retentionDays: 3 }
       )
     })
 
-    it('should throw error when upload fails', async () => {
+    it('should throw error when upload fails (no digest)', async () => {
       mockUploadArtifact.mockResolvedValueOnce({
-        artifactName: 'Test',
-        artifactId: 0,
-        size: 0,
-        failedItems: ['/output/test.zip']
+        id: 0,
+        size: 0
+      })
+
+      await expect(
+        uploadArtifact({
+          filePath: '/output/test.zip',
+          artifactName: 'Test'
+        })
+      ).rejects.toThrow('Failed to upload artifact')
+    })
+
+    it('should throw error when digest is empty', async () => {
+      mockUploadArtifact.mockResolvedValueOnce({
+        id: 1,
+        size: 100,
+        digest: ''
       })
 
       await expect(
@@ -90,10 +97,9 @@ describe('artifact-uploader.ts', () => {
 
     it('should handle custom retention days', async () => {
       mockUploadArtifact.mockResolvedValueOnce({
-        artifactName: 'Test',
-        artifactId: 1,
+        id: 1,
         size: 100,
-        failedItems: []
+        digest: 'sha256:xyz789'
       })
 
       await uploadArtifact({
