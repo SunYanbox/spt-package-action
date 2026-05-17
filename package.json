@@ -42,7 +42,7 @@
     "@actions/glob": "^0.6.1",
     "@actions/io": "^3.0.2",
     "archiver": "^7.0.1",
-    "fast-xml-parser": "^5.5.12"
+    "fast-xml-parser": "^5.7.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
