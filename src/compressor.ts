@@ -2,7 +2,7 @@
  * 压缩模块
  * 将目录压缩为 zip 文件
  */
-import archiver from 'archiver'
+import { ZipArchive } from 'archiver'
 import { createWriteStream, promises as fs } from 'node:fs'
 import path from 'node:path'
 import fss from 'fs'
@@ -27,7 +27,7 @@ export async function createZip(
 
     // 创建输出流
     const output = createWriteStream(outputPath)
-    const archive = archiver('zip', {
+    const archive = new ZipArchive({
       zlib: { level: 9 } // 最高压缩级别
     })
 
