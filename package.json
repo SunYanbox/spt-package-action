@@ -39,7 +39,7 @@
   "dependencies": {
     "@actions/artifact": "^6.2.1",
     "@actions/core": "^3.0.1",
-    "@actions/glob": "^0.6.1",
+    "@actions/glob": "^0.7.0",
     "@actions/io": "^3.0.2",
     "archiver": "^8.0.0",
     "fast-xml-parser": "^5.5.12"
